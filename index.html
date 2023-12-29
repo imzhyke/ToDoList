@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List with Backbone.js</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <style>
+        /* Styling for the background */
+        .bg-bodyz {
+            background-color: #330055;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 1000'%3E%3Cg %3E%3Ccircle fill='%23330055' cx='50' cy='0' r='50'/%3E%3Cg fill='%233a015d' %3E%3Ccircle cx='0' cy='50' r='50'/%3E%3Ccircle cx='100' cy='50' r='50'/%3E%3C/g%3E%3Ccircle fill='%23410165' cx='50' cy='100' r='50'/%3E%3Cg fill='%2348026e' %3E%3Ccircle cx='0' cy='150' r='50'/%3E%3Ccircle cx='100' cy='150' r='50'/%3E%3C/g%3E%3Ccircle fill='%23500376' cx='50' cy='200' r='50'/%3E%3Cg fill='%2357047e' %3E%3Ccircle cx='0' cy='250' r='50'/%3E%3Ccircle cx='100' cy='250' r='50'/%3E%3C/g%3E%3Ccircle fill='%235f0587' cx='50' cy='300' r='50'/%3E%3Cg fill='%2367068f' %3E%3Ccircle cx='0' cy='350' r='50'/%3E%3Ccircle cx='100' cy='350' r='50'/%3E%3C/g%3E%3Ccircle fill='%236f0798' cx='50' cy='400' r='50'/%3E%3Cg fill='%237707a0' %3E%3Ccircle cx='0' cy='450' r='50'/%3E%3Ccircle cx='100' cy='450' r='50'/%3E%3C/g%3E%3Ccircle fill='%238008a9' cx='50' cy='500' r='50'/%3E%3Cg fill='%238909b1' %3E%3Ccircle cx='0' cy='550' r='50'/%3E%3Ccircle cx='100' cy='550' r='50'/%3E%3C/g%3E%3Ccircle fill='%239109ba' cx='50' cy='600' r='50'/%3E%3Cg fill='%239a09c3' %3E%3Ccircle cx='0' cy='650' r='50'/%3E%3Ccircle cx='100' cy='650' r='50'/%3E%3C/g%3E%3Ccircle fill='%23a309cb' cx='50' cy='700' r='50'/%3E%3Cg fill='%23ad09d4' %3E%3Ccircle cx='0' cy='750' r='50'/%3E%3Ccircle cx='100' cy='750' r='50'/%3E%3C/g%3E%3Ccircle fill='%23b608dc' cx='50' cy='800' r='50'/%3E%3Cg fill='%23c007e5' %3E%3Ccircle cx='0' cy='850' r='50'/%3E%3Ccircle cx='100' cy='850' r='50'/%3E%3C/g%3E%3Ccircle fill='%23c905ee' cx='50' cy='900' r='50'/%3E%3Cg fill='%23d303f6' %3E%3Ccircle cx='0' cy='950' r='50'/%3E%3Ccircle cx='100' cy='950' r='50'/%3E%3C/g%3E%3Ccircle fill='%23D0F' cx='50' cy='1000' r='50'/%3E%3C/g%3E%3C/svg%3E");
+            background-attachment: fixed;
+            background-size: contain;
+        }
+        /* Custom styles for disabled rows */
+        .tasks-list .disabled {
+            opacity: 0.6; /* Reduce opacity for disabled rows */
+            pointer-events: none; /* Disable pointer events */
+        }
+    </style>
+</head>
+<body class="bg-bodyz">
+
+<div class="rounded mt-5 bg-light border container-sm p-4">
+    <h1 class="mt-2 text-center fw-bolder">To Do List</h1>
+    <p class="text-center fw-bold">By: Ezekiel Villadolid</p>
+    <h6 class="text-center">
+        <span class="badge bg-info">Backbone</span>
+        <span class="badge bg-info">JQuery</span>
+        <span class="badge bg-info">Bootstrap</span>
+    </h6>
+
+    <table class="table">
+        <thread>
+        <!-- Form to add a new task -->
+        <tr>
+            <td><input placeholder="Enter Task Title" class="form-control task-input" type="text"></td>
+            <td colspan="2"><input placeholder="Enter Task Description" class="form-control description-input"
+                                  type="text"></td>
+            <td><button class="btn btn-success btn-block add-btn"><i class="bi bi-plus-lg px-2"
+                                                                    style="color: rgb(255, 255, 255);"></i></button>
+            </td>
+        </tr>
+        <tr>
+            <th>Task</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thread>
+        <tbody class="tasks-list">
+        <!-- This is where the tasks will be rendered -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Template for rendering individual task -->
+<script type="text/template" class="tasks-list-template">
+    <td><span class="task"><%= task %></span></td>
+    <td><span class="description"><%= description %></span></td>
+    <td>
+        <!-- Checkbox to mark task as completed -->
+        <div class="form-check form-switch">
+            <input class="form-check-input task-done" type="checkbox" <% if(status === 'Finished') print('checked') %>>
+        </div>
+    </td>
+    <td>
+        <!-- Buttons to edit and delete tasks -->
+        <button class="btn btn-warning edit-task"><i class="bi bi-pencil-square"></i></button>
+        <button class="btn btn-danger delete-task"><i class="bi bi-trash3-fill"></i></button>
+    </td>
+</script>
+
+<!-- JavaScript libraries -->
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/underscore/underscore.js"></script>
+<script src="node_modules/backbone/backbone.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Your JavaScript code -->
+<script src="scripts.js"></script>
+</body>
+</html>
